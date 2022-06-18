@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+        http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+        <parameter key="dades_cms.icon_directory">uploads/icon/</parameter>
+    </parameters>
+
+    <services>
+        <!--    COMMANDS    -->
+        <service id="dades_cms.command_site_create_site" class="Dades\CmsBundle\Command\Site\CreateSiteCommand" public="false">
+            <argument type="service" id="dades_cms.service_site_site_creator" />
+            <tag name="console.command" />
+        </service>
+        <service id="Dades\CmsBundle\Command\Site\CreateSiteCommand" alias="dades_cms.command_site_create_site" public="false"/>
+
+
+
+        <!--    CREATORS    -->
+        <service id="dades_cms.service_site_site_creator" class="Dades\CmsBundle\Service\Site\SiteCreatorHelper" public="false">
+            <argument type="service" id="logger"/>
+            <argument type="service" id="Dades\CmsBundle\Repository\SiteRepository" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
+        </service>
+        <service id="Dades\CmsBundle\Service\Site\SiteCreatorInterface" alias="dades_cms.service_site_site_creator" />
+
+
+
+        <!--    REPOSITORIES    -->
+        <service id="Dades\CmsBundle\Repository\SiteRepository" public="false">
+            <argument type="service" id="doctrine"/>
+            <tag name="doctrine.repository_service"/>
+        </service>
+
+        <service id="Dades\CmsBundle\Repository\Structure\BlockTypeRepository" public="false">
+            <argument type="service" id="doctrine"/>
+            <tag name="doctrine.repository_service"/>
+        </service>
+
+        <service id="Dades\CmsBundle\Repository\Structure\PageTemplateBlockTypeRepository" public="false">
+            <argument type="service" id="doctrine"/>
+            <tag name="doctrine.repository_service"/>
+        </service>
+
+        <service id="Dades\CmsBundle\Repository\Structure\PageTemplateRepository" public="false">
+            <argument type="service" id="doctrine"/>
+            <tag name="doctrine.repository_service"/>
+        </service>
+
+
+
+        <!--    READERS    -->
+        <service id="dades_cms.service_site_site_reader" class="Dades\CmsBundle\Service\Site\SiteReaderService" public="false">
+            <argument type="service" id="Dades\CmsBundle\Repository\SiteRepository" />
+        </service>
+        <service id="Dades\CmsBundle\Service\Site\SiteReaderInterface" alias="dades_cms.service_site_site_reader" public="false"/>
+
+
+
+        <!--    TWIG EXTENSIONS    -->
+        <service id="cms_dades.twig_admin" class="Dades\CmsBundle\Twig\Admin\AdminExtension">
+            <argument type="service" id="dades_cms.service_site_site_reader"/>
+            <argument>%dades_cms.icon_directory%</argument>
+            <tag name="twig.extension"/>
+        </service>
+
+
+
+        <!--    LISTENERS    -->
+        <service id="cms_dades.listener_block_type" class="Dades\CmsBundle\EventListener\BlockType\PreRemoveBlockTypeListener">
+            <tag name="doctrine.orm.entity_listener" event="preRemove" entity="Dades\CmsBundle\Entity\BlockType"/>
+        </service>
+
+
+
+        <!--    CONSTRAINTS & VALIDATORS    -->
+        <service id="cms_dades.validator_files_file_exists" class="Dades\CmsBundle\Validator\Files\FileExists"/>
+        <service id="cms_dades.validator_files_file_exists_validator" class="Dades\CmsBundle\Validator\Files\FileExistsValidator">
+            <argument type="service" id="filesystem"/>
+            <argument type="service" id="translator"/>
+            <tag name="validator.constraint_validator"/>
+        </service>
+    </services>
+</container>

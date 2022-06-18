@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<constraint-mapping xmlns="http://symfony.com/schema/dic/constraint-mapping"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://symfony.com/schema/dic/constraint-mapping
+        https://symfony.com/schema/dic/constraint-mapping/constraint-mapping-1.0.xsd">
+
+    <class name="Dades\CmsBundle\Entity\Site">
+        <property name="title">
+            <constraint name="NotBlank"/>
+            <constraint name="Type">
+                <option name="type">string</option>
+            </constraint>
+        </property>
+        <property name="icon">
+            <constraint name="Type">
+                <option name="type">string</option>
+            </constraint>
+        </property>
+    </class>
+
+    <class name="Dades\CmsBundle\Entity\BlockType">
+        <property name="type">
+            <constraint name="NotBlank"/>
+            <constraint name="Type">
+                <option name="type">string</option>
+            </constraint>
+        </property>
+        <property name="layout">
+            <constraint name="NotBlank"/>
+            <constraint name="Type">
+                <option name="type">string</option>
+            </constraint>
+        </property>
+        <property name="formType">
+            <constraint name="NotBlank"/>
+            <constraint name="Type">
+                <option name="type">string</option>
+            </constraint>
+            <constraint name="Dades\CmsBundle\Validator\Files\FileExists"/>
+        </property>
+        <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
+            <option name="fields">
+                <value>type</value>
+            </option>
+            <option name="message">block-type.create.error.type</option>
+        </constraint>
+        <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
+            <option name="fields">
+                <value>layout</value>
+            </option>
+            <option name="message">block-type.create.error.layout</option>
+        </constraint>
+    </class>
+
+    <class name="Dades\CmsBundle\Entity\PageTemplate">
+        <property name="name">
+            <constraint name="NotBlank"/>
+            <constraint name="Type">
+                <option name="type">string</option>
+            </constraint>
+        </property>
+        <property name="layout">
+            <constraint name="NotBlank"/>
+            <constraint name="Type">
+                <option name="type">string</option>
+            </constraint>
+        </property>
+        <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
+            <option name="fields">
+                <value>name</value>
+            </option>
+            <option name="message">page-template.create.error.name</option>
+        </constraint>
+        <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
+            <option name="fields">
+                <value>layout</value>
+            </option>
+            <option name="message">page-template.create.error.layout</option>
+        </constraint>
+    </class>
+
+    <class name="Dades\CmsBundle\Entity\PageTemplateBlockType">
+        <property name="slug">
+            <constraint name="NotBlank"/>
+        </property>
+        <property name="pageTemplate">
+            <constraint name="NotNull"/>
+        </property>
+        <property name="blockType">
+            <constraint name="NotNull"/>
+        </property>
+        <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
+            <option name="fields">
+                <value>slug</value>
+                <value>pageTemplate</value>
+                <value>blockType</value>
+            </option>
+            <option name="errorPath">slug</option>
+        </constraint>
+    </class>
+</constraint-mapping>

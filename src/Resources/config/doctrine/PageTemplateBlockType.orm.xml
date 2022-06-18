@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Dades\CmsBundle\Entity\PageTemplateBlockType" table="page_template_block_type" repository-class="Dades\CmsBundle\Repository\Structure\PageTemplateBlockTypeRepository">
+        <id name="id" type="integer">
+            <generator strategy="AUTO" />
+        </id>
+
+        <field name="slug" type="string" length="50" unique="true"/>
+
+        <many-to-one field="pageTemplate" target-entity="Dades\CmsBundle\Entity\PageTemplate" inversed-by="pageTemplateBlockTypes">
+            <join-column name="page_template_id" referenced-column-name="id" on-delete="CASCADE"/>
+        </many-to-one>
+        <many-to-one field="blockType" target-entity="Dades\CmsBundle\Entity\BlockType" inversed-by="pageTemplateBlockTypes">
+            <join-column name="block_type_id" referenced-column-name="id"/>
+        </many-to-one>
+    </entity>
+
+</doctrine-mapping>
