@@ -1,0 +1,20 @@
+{
+    "name": "dades/cms-bundle",
+    "description": "Symfony bundle to easily create a CMS",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Dades\\CmsBundle\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Damien DE SOUSA",
+            "email": "desousadamien30@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.1.7"
+    }
+}

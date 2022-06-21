@@ -79,6 +79,7 @@
         <service id="cms_dades.validator_files_file_exists_validator" class="Dades\CmsBundle\Validator\Files\FileExistsValidator">
             <argument type="service" id="filesystem"/>
             <argument type="service" id="translator"/>
+            <argument type="service" id="file_locator"/>
             <tag name="validator.constraint_validator"/>
         </service>
     </services>

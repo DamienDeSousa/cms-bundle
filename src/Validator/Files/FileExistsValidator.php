@@ -17,6 +17,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Component\HttpKernel\Config\FileLocator;
 
 /**
  * Class used to validate if a file exists.
@@ -26,6 +27,7 @@ class FileExistsValidator extends ConstraintValidator
     public function __construct(
         private Filesystem $filesystem,
         private TranslatorInterface $translator,
+        private FileLocator $fileLocator,
     ) {
     }
 
@@ -35,7 +37,10 @@ class FileExistsValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, FileExists::class);
         }
 
-        $file = __DIR__ . '/../../../../' . BlockTypeCRUDController::FORM_TYPE_BLOCK_RELATIVE_PATH . '/' . $value;
+        $blockTypeFolder = $this->fileLocator->locate(
+            '@DadesCmsBundle' . BlockTypeCRUDController::FORM_TYPE_BLOCK_RELATIVE_PATH
+        );
+        $file = $blockTypeFolder . '/' . $value;
         if (
             !$value
             || !$this->filesystem->exists(
