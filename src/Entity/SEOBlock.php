@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Dades\CmsBundle\Entity;
 
-class SEOBlock
+class SEOBlock extends Block
 {
     //https://www.crodde.com/blog/balises-seo-html/
 
