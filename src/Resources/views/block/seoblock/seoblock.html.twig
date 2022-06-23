@@ -1,0 +1,9 @@
+<title>{{ seoBlock.title }}</title>
+<meta charset="UTF-8">
+<meta name="description" content="{{ seoBlock.description }}">
+<meta name="robots" content="{{ seoBlock.metaRobots|join(', ') }}">
+<meta name="robots" content="{{ seoBlock.metaRobots|join(', ') }}">
+<meta name="viewport" content="{{ seoBlock.metaViewport }}">
+{% if seoBlock.canonical|default %}
+    <meta name="canonical" content="seoBlock.canonical">
+{% endif %}

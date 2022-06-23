@@ -33,21 +33,6 @@
             <tag name="doctrine.repository_service"/>
         </service>
 
-        <service id="Dades\CmsBundle\Repository\Structure\BlockTypeRepository" public="false">
-            <argument type="service" id="doctrine"/>
-            <tag name="doctrine.repository_service"/>
-        </service>
-
-        <service id="Dades\CmsBundle\Repository\Structure\PageTemplateBlockTypeRepository" public="false">
-            <argument type="service" id="doctrine"/>
-            <tag name="doctrine.repository_service"/>
-        </service>
-
-        <service id="Dades\CmsBundle\Repository\Structure\PageTemplateRepository" public="false">
-            <argument type="service" id="doctrine"/>
-            <tag name="doctrine.repository_service"/>
-        </service>
-
 
 
         <!--    READERS    -->
@@ -63,13 +48,6 @@
             <argument type="service" id="dades_cms.service_site_site_reader"/>
             <argument>%dades_cms.icon_directory%</argument>
             <tag name="twig.extension"/>
-        </service>
-
-
-
-        <!--    LISTENERS    -->
-        <service id="cms_dades.listener_block_type" class="Dades\CmsBundle\EventListener\BlockType\PreRemoveBlockTypeListener">
-            <tag name="doctrine.orm.entity_listener" event="preRemove" entity="Dades\CmsBundle\Entity\BlockType"/>
         </service>
 
 
