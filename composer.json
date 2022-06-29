@@ -23,6 +23,7 @@
         "doctrine/doctrine-bundle": "^2.7.0",
         "symfony/twig-bundle": "^5.4.8",
         "symfony/translation": "^5.4.9",
-        "symfony/validator": "^5.4.8"
+        "symfony/validator": "^5.4.8",
+        "symfony-cmf/routing-bundle": "^2.5"
     }
 }
