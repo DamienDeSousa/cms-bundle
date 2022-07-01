@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en-US" trgLang="fr-FR">
+    <file id="validators.fr">
+        <unit id="cms.available_block">
+            <segment>
+                <source>cms.available_block</source>
+                <target>Ce block {block_name} est déjà utilisé par une autre page.</target>
+            </segment>
+        </unit>
+        <unit id="cms.block_type">
+            <segment>
+                <source>cms.block_type</source>
+                <target>Le block {block_name} est du type {block_type}, or il faut un block de type {expected_type}.</target>
+            </segment>
+        </unit>
+        <unit id="cms.twig_template_exists">
+            <segment>
+                <source>cms.twig_template_exists</source>
+                <target>Le template twig {template_path} est introuvable.</target>
+            </segment>
+        </unit>
+        <unit id="cms.unexpected_twig_template_exists">
+            <segment>
+                <source>cms.unexpected_twig_template_exists</source>
+                <target>Une erreur est survenue lors du chargement du template twig {template_path}.</target>
+            </segment>
+        </unit>
+        <unit id="cms.not_block_type">
+            <segment>
+                <source>cms.block_type</source>
+                <target>Le block {block_name} n'est pas du bon type, il doit être différent du type {block_type}.</target>
+            </segment>
+        </unit>
+    </file>
+</xliff>

@@ -1,9 +1,10 @@
-<title>{{ seoBlock.title }}</title>
+<title>{{ get_title() ~ '-' ~ seoBlock.title }}</title>
 <meta charset="UTF-8">
 <meta name="description" content="{{ seoBlock.description }}">
 <meta name="robots" content="{{ seoBlock.metaRobots|join(', ') }}">
 <meta name="robots" content="{{ seoBlock.metaRobots|join(', ') }}">
 <meta name="viewport" content="{{ seoBlock.metaViewport }}">
+<link rel="icon" type="image/png" href="{{ get_icon() }}"/>
 {% if seoBlock.canonical|default %}
     <meta name="canonical" content="seoBlock.canonical">
 {% endif %}

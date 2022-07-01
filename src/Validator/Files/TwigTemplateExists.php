@@ -1,21 +1,16 @@
 <?php
 
-/**
- * File that define the FileExists constraint class.
- */
-
 declare(strict_types=1);
 
 namespace Dades\CmsBundle\Validator\Files;
 
 use Symfony\Component\Validator\Constraint;
 
-#[\Attribute]
-class FileExists extends Constraint
+class TwigTemplateExists extends Constraint
 {
-    public string $message = 'file_exists';
+    public string $message = 'cms.twig_template_exists';
 
-    public string $file;
+    public string $unexpectedMessage = 'cms.unexpected_twig_template_exists';
 
     public function getTargets(): array|string
     {

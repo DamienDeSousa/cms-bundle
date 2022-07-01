@@ -1,0 +1,11 @@
+<!doctype html>
+<html>
+<head>
+    {% include seoBlock.template with {'seoBlock': seoBlock.content} %}
+</head>
+<body>
+    {% for block in blocks %}
+        {% include block.template with {'block': block.content} %}
+    {% endfor %}
+</body>
+</html>

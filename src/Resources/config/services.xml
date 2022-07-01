@@ -33,6 +33,16 @@
             <tag name="doctrine.repository_service"/>
         </service>
 
+        <service id="Dades\CmsBundle\Repository\PageRepository" public="false">
+            <argument type="service" id="doctrine"/>
+            <tag name="doctrine.repository_service"/>
+        </service>
+
+        <service id="Dades\CmsBundle\Repository\BlockRepository" public="false">
+            <argument type="service" id="doctrine"/>
+            <tag name="doctrine.repository_service"/>
+        </service>
+
 
 
         <!--    READERS    -->
@@ -53,12 +63,61 @@
 
 
         <!--    CONSTRAINTS & VALIDATORS    -->
-        <service id="cms_dades.validator_files_file_exists" class="Dades\CmsBundle\Validator\Files\FileExists"/>
-        <service id="cms_dades.validator_files_file_exists_validator" class="Dades\CmsBundle\Validator\Files\FileExistsValidator">
-            <argument type="service" id="filesystem"/>
+        <service id="cms_dades.validator_block_type" class="Dades\CmsBundle\Validator\Block\BlockType"/>
+        <service id="cms_dades.validator_block_type_validator" class="Dades\CmsBundle\Validator\Block\BlockTypeValidator">
             <argument type="service" id="translator"/>
-            <argument type="service" id="file_locator"/>
             <tag name="validator.constraint_validator"/>
+        </service>
+
+        <service id="cms_dades.validator_available_block" class="Dades\CmsBundle\Validator\Block\AvailableBlock"/>
+        <service id="cms_dades.validator_available_block_validator" class="Dades\CmsBundle\Validator\Block\AvailableBlockValidator">
+            <argument type="service" id="translator"/>
+            <tag name="validator.constraint_validator"/>
+        </service>
+
+        <service id="cms_dades.validator_twig_template_exists" class="Dades\CmsBundle\Validator\Files\TwigTemplateExists"/>
+        <service id="cms_dades.validator_twig_template_exists_validator" class="Dades\CmsBundle\Validator\Files\TwigTemplateExistsValidator">
+            <argument type="service" id="twig"/>
+            <argument type="service" id="translator"/>
+            <tag name="validator.constraint_validator"/>
+        </service>
+
+        <service id="cms_dades.validator_not_block_type" class="Dades\CmsBundle\Validator\Block\NotBlockType"/>
+        <service id="cms_dades.validator_not_block_type_validator" class="Dades\CmsBundle\Validator\Block\NotBlockTypeValidator">
+            <argument type="service" id="translator"/>
+            <tag name="validator.constraint_validator"/>
+        </service>
+
+
+
+        <!--    PROPERTY ACCESSORS    -->
+        <!--    This service is used to read properties of entities.    -->
+        <!--    By default, it tries to get properties through getters and setters or magic getter and magic setter.    -->
+        <!--    But it doesn't use the magic method __call().    -->
+        <!--    That's why the following argument has been overriden.    -->
+        <!--    It works like this:    -->
+        <!--    4: enable magic __call()    -->
+        <!--    2: enable magic __set()   -->
+        <!--    1: enable magic __get()   -->
+        <service id="property_accessor" class="Symfony\Component\PropertyAccess\PropertyAccessor">
+            <argument>7</argument>
+        </service>
+
+
+
+        <!--    ROUTE LOADERS    -->
+        <service id="cms_dades.page_route_loader" class="Dades\CmsBundle\Routing\RouteLoader" parent="Dades\CmsBundle\Repository\PageRepository"/>
+
+
+
+        <!--    CONTROLLERS    -->
+        <service id="Dades\CmsBundle\Controller\PageController" public="true">
+            <argument type="service" id="doctrine"/>
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+            <tag name="controller.service_arguments"/>
+            <tag name="container.service_subscriber"/>
         </service>
     </services>
 </container>

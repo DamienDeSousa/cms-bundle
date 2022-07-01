@@ -19,9 +19,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CreateSiteCommand extends Command
 {
-    /**
-     * @var string
-     */
     private const ARGUMENT_TITLE_NAME = 'title';
 
     /**

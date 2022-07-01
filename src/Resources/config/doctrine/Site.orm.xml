@@ -8,9 +8,7 @@
         <id name="id" type="integer">
             <generator strategy="AUTO" />
         </id>
-
         <field name="title" type="string" length="255" />
-
         <field name="icon" type="text" nullable="true" />
     </entity>
 
