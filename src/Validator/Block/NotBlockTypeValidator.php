@@ -22,34 +22,37 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class NotBlockTypeValidator extends ConstraintValidator
 {
-    public function __construct(private TranslatorInterface $translator)
-    {
-
-    }
-
     public function validate($value, Constraint $constraint)
     {
         if (!$constraint instanceof NotBlockType) {
             throw new UnexpectedTypeException($constraint, NotBlockType::class);
         }
 
-        if (!$value instanceof Collection) {
-            return;
-        }
-
-        foreach ($value as $block) {
-            if ($block instanceof Block && $block->getType() === $constraint->type) {
-                $this->context
-                    ->buildViolation(
-                        $this->translator->trans(
-                            $constraint->message,
+        if ($value instanceof Collection) {
+            foreach ($value as $block) {
+                if ($block instanceof Block && $block->getType() === $constraint->type) {
+                    $this->context
+                        ->buildViolation($constraint->message)
+                        ->setParameters(
                             [
                                 'block_name' => $block->getName(),
                                 'block_type' => $block->getType(),
-                            ],
-                            'validators'
-                        )
-                    )->addViolation();
+                            ]
+                        )->setTranslationDomain('validators')
+                        ->addViolation();
+                }
+            }
+        } elseif ($value instanceof Block) {
+            if ($value instanceof Block && $value->getType() === $constraint->type) {
+                $this->context
+                    ->buildViolation($constraint->message)
+                    ->setParameters(
+                        [
+                            'block_name' => $value->getName(),
+                            'block_type' => $value->getType(),
+                        ]
+                    )->setTranslationDomain('validators')
+                    ->addViolation();
             }
         }
     }

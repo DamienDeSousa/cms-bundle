@@ -21,11 +21,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class AvailableBlockValidator extends ConstraintValidator
 {
-    public function __construct(private TranslatorInterface $translator)
-    {
-
-    }
-
     public function validate($value, Constraint $constraint)
     {
         if (!$constraint instanceof AvailableBlock) {
@@ -38,15 +33,12 @@ class AvailableBlockValidator extends ConstraintValidator
 
         $relatedPage = $value->getPageForSeo();
 
-        if ($relatedPage && $relatedPage->getId() !== $constraint->page->getId()) {
+        if ($relatedPage && $relatedPage !== $constraint->page) {
             $this->context
-                ->buildViolation(
-                    $this->translator->trans(
-                        $constraint->message,
-                        ['block_name' => $value->getName()],
-                        'validators'
-                    )
-                )->addViolation();
+                ->buildViolation($constraint->message)
+                ->setParameter('block_name', $value->getName())
+                ->setTranslationDomain('validators')
+                ->addViolation();
         }
     }
 }

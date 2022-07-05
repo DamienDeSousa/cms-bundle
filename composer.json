@@ -8,6 +8,11 @@
             "Dades\\CmsBundle\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Dades\\CmsBundle\\Tests\\": "tests/"
+        }
+    },
     "authors": [
         {
             "name": "Damien DE SOUSA",
@@ -25,5 +30,9 @@
         "symfony/translation": "^5.4.9",
         "symfony/validator": "^5.4.8",
         "symfony-cmf/routing-bundle": "^2.5"
+    },
+    "require-dev": {
+        "symfony/phpunit-bridge": "^6.1.2",
+        "dades/test-fixtures": "*@dev"
     }
 }

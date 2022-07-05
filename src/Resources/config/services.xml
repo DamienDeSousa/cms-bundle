@@ -65,26 +65,22 @@
         <!--    CONSTRAINTS & VALIDATORS    -->
         <service id="cms_dades.validator_block_type" class="Dades\CmsBundle\Validator\Block\BlockType"/>
         <service id="cms_dades.validator_block_type_validator" class="Dades\CmsBundle\Validator\Block\BlockTypeValidator">
-            <argument type="service" id="translator"/>
             <tag name="validator.constraint_validator"/>
         </service>
 
         <service id="cms_dades.validator_available_block" class="Dades\CmsBundle\Validator\Block\AvailableBlock"/>
         <service id="cms_dades.validator_available_block_validator" class="Dades\CmsBundle\Validator\Block\AvailableBlockValidator">
-            <argument type="service" id="translator"/>
             <tag name="validator.constraint_validator"/>
         </service>
 
         <service id="cms_dades.validator_twig_template_exists" class="Dades\CmsBundle\Validator\Files\TwigTemplateExists"/>
         <service id="cms_dades.validator_twig_template_exists_validator" class="Dades\CmsBundle\Validator\Files\TwigTemplateExistsValidator">
             <argument type="service" id="twig"/>
-            <argument type="service" id="translator"/>
             <tag name="validator.constraint_validator"/>
         </service>
 
         <service id="cms_dades.validator_not_block_type" class="Dades\CmsBundle\Validator\Block\NotBlockType"/>
         <service id="cms_dades.validator_not_block_type_validator" class="Dades\CmsBundle\Validator\Block\NotBlockTypeValidator">
-            <argument type="service" id="translator"/>
             <tag name="validator.constraint_validator"/>
         </service>
 

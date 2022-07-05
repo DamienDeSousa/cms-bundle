@@ -29,6 +29,11 @@ class Block
 
     private  ?Page $page;
 
+    public function __construct()
+    {
+        $this->content = [];
+    }
+
     public function getPage(): ?Page
     {
         return $this->page;

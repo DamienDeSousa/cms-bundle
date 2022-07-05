@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace Dades\CmsBundle\Entity;
 
+use Dades\CmsBundle\Exception\DeleteEntityException;
+
 class Site
 {
     private ?int $id;
@@ -46,5 +48,10 @@ class Site
         $this->icon = $icon;
 
         return $this;
+    }
+
+    public function onPreRemove(): void
+    {
+        throw new DeleteEntityException();
     }
 }

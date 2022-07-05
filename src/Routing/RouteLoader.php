@@ -34,10 +34,11 @@ class RouteLoader extends PageRepository implements RouteProviderInterface
         parent::__construct($registry);
     }
 
-    public function getRouteCollectionForRequest(Request $request)
+    public function getRouteCollectionForRequest(Request $request): RouteCollection
     {
-        $pathInfo = $request->getPathInfo();
-        $pages = $this->findBy(['url' => $pathInfo]);
+        //remove "/" from the request
+        $requestUri = substr($request->getRequestUri(), 1);
+        $pages = $this->findBy(['url' => $requestUri]);
         $collection = new RouteCollection();
         foreach ($pages as $page) {
             $route = new Route($page->getUrl(), ['_controller' => PageController::class]);
@@ -47,17 +48,17 @@ class RouteLoader extends PageRepository implements RouteProviderInterface
         return $collection;
     }
 
-    public function getRouteByName($name)
+    public function getRouteByName($name): Route
     {
-        $page = $this->findOneBy(['name' => $name]);
+        $page = $this->findOneBy(['routeName' => $name]);
         if (!$page) {
             throw new RouteNotFoundException("No route found for name '$name'");
         }
 
-        return new Route($document->getUrl());
+        return new Route($page->getUrl());
     }
 
-    public function getRoutesByNames($names)
+    public function getRoutesByNames($names): array
     {
         $routes = [];
         if (!$names) {

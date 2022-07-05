@@ -10,6 +10,9 @@
         </id>
         <field name="title" type="string" length="255" />
         <field name="icon" type="text" nullable="true" />
-    </entity>
 
+        <lifecycle-callbacks>
+            <lifecycle-callback type="preRemove" method="onPreRemove"/>
+        </lifecycle-callbacks>
+    </entity>
 </doctrine-mapping>

@@ -32,7 +32,7 @@ class PageController extends AbstractController
         $page = $this->managerRegistry
             ->getRepository(Page::class)
             ->findOneBy(
-                ['url' => $request->getPathInfo()]
+                ['url' => substr($request->getRequestUri(), 1)]
             );
         if (!$page) {
             throw new NotFoundHttpException();

@@ -19,10 +19,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class BlockTypeValidator extends ConstraintValidator
 {
-    public function __construct(private TranslatorInterface $translator)
-    {
-
-    }
 
     public function validate($value, Constraint $constraint)
     {
@@ -36,17 +32,15 @@ class BlockTypeValidator extends ConstraintValidator
         
         if ($value->getType() !== $constraint->type) {
             $this->context
-                ->buildViolation(
-                    $this->translator->trans(
-                        $constraint->message,
-                        [
-                            'block_name' => $value->getName(),
-                            'block_type' => $value->getType(),
-                            'expected_type' => $constraint->type,
-                        ],
-                        'validators'
-                    )
-                )->addViolation();
+                ->buildViolation($constraint->message)
+                ->setParameters(
+                    [
+                        'block_name' => $value->getName(),
+                        'block_type' => $value->getType(),
+                        'expected_type' => $constraint->type,
+                    ]
+                )->setTranslationDomain('validators')
+                ->addViolation();
         }
     }
 }
