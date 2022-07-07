@@ -53,10 +53,10 @@ class NoIconWithoutSiteTest extends TestCase
 
             protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader)
             {
-                $confDir = $this->getProjectDir().'/src/Resources/config';
-                $loader->load($confDir . '/test/doctrine.yaml', 'yaml');
-                $loader->load($confDir . '/test/framework.yaml', 'yaml');
-                $loader->load($confDir . '/test/twig.yaml', 'yaml');
+                $confDir = $this->getProjectDir().'/tests/fixtures/resources/config';
+                $loader->load($confDir . '/doctrine.yaml', 'yaml');
+                $loader->load($confDir . '/framework.yaml', 'yaml');
+                $loader->load($confDir . '/twig.yaml', 'yaml');
             }
 
             public function getCacheDir(): string

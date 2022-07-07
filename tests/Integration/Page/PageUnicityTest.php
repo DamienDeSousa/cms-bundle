@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace Dades\CmsBundle\Tests\Integration\Page;
 
 use Dades\CmsBundle\DadesCmsBundle;
-use Dades\CmsBundle\DataFixtures\ORM\Page\PageUnicityTestFixture;
+use Dades\CmsBundle\Tests\Integration\Page\PageUnicityTestFixture;
 use Dades\CmsBundle\Entity\Block;
 use Dades\CmsBundle\Entity\Page;
 use Dades\CmsBundle\Tests\Integration\Block\BlockNameUnicityKernel;
+use Dades\CmsBundle\Tests\RunCommandTrait;
 use Dades\TestFixtures\Fixture\FixtureAttachedTrait;
 use Dades\TestFixtures\Fixture\FixtureLoaderTrait;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use PHPUnit\Framework\TestCase;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -22,6 +24,8 @@ use Symfony\Component\Routing\RouteCollectionBuilder;
 class PageUnicityTest extends TestCase
 {
     use FixtureLoaderTrait;
+
+    use RunCommandTrait;
 
     private ManagerRegistry $managerRegistry;
 
@@ -100,10 +104,10 @@ class PageUnicityTest extends TestCase
 
             protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader)
             {
-                $confDir = $this->getProjectDir().'/src/Resources/config';
-                $loader->load($confDir . '/test/doctrine.yaml', 'yaml');
-                $loader->load($confDir . '/test/framework.yaml', 'yaml');
-                $loader->load($confDir . '/test/twig.yaml', 'yaml');
+                $confDir = $this->getProjectDir().'/tests/fixtures/resources/config';
+                $loader->load($confDir . '/doctrine.yaml', 'yaml');
+                $loader->load($confDir . '/framework.yaml', 'yaml');
+                $loader->load($confDir . '/twig.yaml', 'yaml');
             }
 
             public function getCacheDir(): string
@@ -112,6 +116,16 @@ class PageUnicityTest extends TestCase
             }
         };
         $kernel->boot();
+        $application = new Application($kernel);
+        $application->setAutoExit(false);
+        $this->runCommand(
+            $application,
+            [
+                'command' => 'doctrine:schema:update',
+                '--quiet' => true,
+                '--force' => true,
+            ]
+        );
         $this->managerRegistry = $kernel->getContainer()->get('doctrine');
         $this->loadFixture(
             $this->managerRegistry->getManager(),

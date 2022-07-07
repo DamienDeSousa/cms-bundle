@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace Dades\CmsBundle\DataFixtures\ORM\Block;
+namespace Dades\CmsBundle\Tests\Integration\Block;
 
 use Dades\CmsBundle\Entity\Block;
 use Doctrine\Bundle\FixturesBundle\Fixture;

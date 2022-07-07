@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Dades\CmsBundle\DataFixtures\ORM\Site;
+namespace Dades\CmsBundle\Tests\Integration\Site;
 use Dades\CmsBundle\Entity\Site;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;

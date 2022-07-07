@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace Dades\CmsBundle\DataFixtures\ORM\Controller;
+namespace Dades\CmsBundle\Tests\Functional\Controller;
 
 use Dades\CmsBundle\Entity\Block;
 use Dades\CmsBundle\Entity\Page;

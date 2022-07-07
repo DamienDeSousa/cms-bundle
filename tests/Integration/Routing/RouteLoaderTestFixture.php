@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Dades\CmsBundle\DataFixtures\ORM\Routing;
+namespace Dades\CmsBundle\Tests\Integration\Routing;
 
 use Dades\CmsBundle\Entity\Page;
 use Doctrine\Bundle\FixturesBundle\Fixture;

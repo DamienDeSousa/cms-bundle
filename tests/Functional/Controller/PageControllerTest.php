@@ -5,21 +5,28 @@ declare(strict_types=1);
 namespace Dades\CmsBundle\Tests\Functional\Controller;
 
 use Dades\CmsBundle\DadesCmsBundle;
-use Dades\CmsBundle\DataFixtures\ORM\Controller\PageControllerTestFixture;
+use Dades\CmsBundle\Tests\Functional\Controller;
 use Dades\CmsBundle\Entity\Page;
+use Dades\CmsBundle\Tests\RunCommandTrait;
 use Dades\TestFixtures\Fixture\FixtureLoaderTrait;
 use Doctrine\Persistence\ManagerRegistry;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Input\StringInput;
+use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 
 class PageControllerTest extends TestCase
 {
     use FixtureLoaderTrait;
+
+    use RunCommandTrait;
 
     private KernelBrowser $client;
 
@@ -70,12 +77,12 @@ class PageControllerTest extends TestCase
 
             protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader)
             {
-                $confDir = $this->getProjectDir().'/src/Resources/config';
-                $loader->load($confDir . '/test/doctrine.yaml', 'yaml');
-                $loader->load($confDir . '/test/framework.yaml', 'yaml');
-                $loader->load($confDir . '/test/twig.yaml', 'yaml');
-                $loader->load($confDir . '/test/cmf_routing.yaml', 'yaml');
-                $loader->load($confDir . '/test/routing.yaml', 'yaml');
+                $confDir = $this->getProjectDir().'/tests/fixtures/resources/config';
+                $loader->load($confDir . '/doctrine.yaml', 'yaml');
+                $loader->load($confDir . '/framework.yaml', 'yaml');
+                $loader->load($confDir . '/twig.yaml', 'yaml');
+                $loader->load($confDir . '/cmf_routing.yaml', 'yaml');
+                $loader->load($confDir . '/routing.yaml', 'yaml');
             }
 
             public function getCacheDir(): string
@@ -86,6 +93,16 @@ class PageControllerTest extends TestCase
 
         $kernel->boot();
         $this->client = new KernelBrowser($kernel);
+        $application = new Application($this->client->getKernel());
+        $application->setAutoExit(false);
+        $this->runCommand(
+            $application,
+            [
+                'command' => 'doctrine:schema:update',
+                '--quiet' => true,
+                '--force' => true,
+            ]
+        );
         /** @var ManagerRegistry $registry */
         $registry = $kernel->getContainer()->get('doctrine');
         $this->loadFixture(

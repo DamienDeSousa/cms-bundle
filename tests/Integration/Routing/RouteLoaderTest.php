@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Dades\CmsBundle\Tests\Integration\Routing;
 
 use Dades\CmsBundle\DadesCmsBundle;
-use Dades\CmsBundle\DataFixtures\ORM\Routing\RouteLoaderTestFixture;
+use Dades\CmsBundle\Tests\Integration\Routing\RouteLoaderTestFixture;
 use Dades\CmsBundle\Entity\Page;
 use Dades\CmsBundle\Routing\RouteLoader;
 use Dades\CmsBundle\Tests\Integration\Page\PageUnicityKernel;
+use Dades\CmsBundle\Tests\RunCommandTrait;
 use Dades\TestFixtures\Fixture\FixtureLoaderTrait;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -24,6 +26,8 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 class RouteLoaderTest extends TestCase
 {
     use FixtureLoaderTrait;
+
+    use RunCommandTrait;
 
     private RouteLoader $loader;
 
@@ -107,10 +111,10 @@ class RouteLoaderTest extends TestCase
 
             protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader)
             {
-                $confDir = $this->getProjectDir().'/src/Resources/config';
-                $loader->load($confDir . '/test/doctrine.yaml', 'yaml');
-                $loader->load($confDir . '/test/framework.yaml', 'yaml');
-                $loader->load($confDir . '/test/twig.yaml', 'yaml');
+                $confDir = $this->getProjectDir().'/tests/fixtures/resources/config';
+                $loader->load($confDir . '/doctrine.yaml', 'yaml');
+                $loader->load($confDir . '/framework.yaml', 'yaml');
+                $loader->load($confDir . '/twig.yaml', 'yaml');
             }
 
             public function getCacheDir(): string
@@ -130,6 +134,16 @@ class RouteLoaderTest extends TestCase
         };
 
         $kernel->boot();
+        $application = new Application($kernel);
+        $application->setAutoExit(false);
+        $this->runCommand(
+            $application,
+            [
+                'command' => 'doctrine:schema:update',
+                '--quiet' => true,
+                '--force' => true,
+            ]
+        );
         $this->managerRegistry = $kernel->getContainer()->get('doctrine');
         $this->loadFixture(
             $this->managerRegistry->getManager(),

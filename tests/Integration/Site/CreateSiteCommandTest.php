@@ -14,6 +14,7 @@ namespace Dades\CmsBundle\Tests\Integration\Site;
 
 use Dades\CmsBundle\DadesCmsBundle;
 use Dades\CmsBundle\DataFixtures\ORM\Site\CreateSiteCommandTestFixture;
+use Dades\CmsBundle\Tests\RunCommandTrait;
 use Dades\TestFixtures\Fixture\FixtureLoaderTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -26,7 +27,7 @@ use Symfony\Component\Routing\RouteCollectionBuilder;
 
 class CreateSiteCommandTest extends TestCase
 {
-    use FixtureLoaderTrait;
+    use RunCommandTrait;
 
     private Kernel $kernel;
 
@@ -93,10 +94,10 @@ class CreateSiteCommandTest extends TestCase
 
             protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader)
             {
-                $confDir = $this->getProjectDir().'/src/Resources/config';
-                $loader->load($confDir . '/test/doctrine.yaml', 'yaml');
-                $loader->load($confDir . '/test/framework.yaml', 'yaml');
-                $loader->load($confDir . '/test/twig.yaml', 'yaml');
+                $confDir = $this->getProjectDir().'/tests/fixtures/resources/config';
+                $loader->load($confDir . '/doctrine.yaml', 'yaml');
+                $loader->load($confDir . '/framework.yaml', 'yaml');
+                $loader->load($confDir . '/twig.yaml', 'yaml');
             }
 
             public function getCacheDir(): string
@@ -106,10 +107,15 @@ class CreateSiteCommandTest extends TestCase
         };
 
         $this->kernel->boot();
-        $managerRegistry = $this->kernel->getContainer()->get('doctrine');
-        $this->loadFixture(
-            $managerRegistry->getManager(),
-            new CreateSiteCommandTestFixture()
+        $application = new Application($this->kernel);
+        $application->setAutoExit(false);
+        $this->runCommand(
+            $application,
+            [
+                'command' => 'doctrine:schema:update',
+                '--quiet' => true,
+                '--force' => true,
+            ]
         );
     }
 }

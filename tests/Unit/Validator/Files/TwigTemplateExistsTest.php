@@ -27,7 +27,8 @@ class TwigTemplateExistsTest extends ConstraintValidatorTestCase
 
     public function testValidTwigTemplate()
     {
-        $this->twig->method('load')->willReturn('');
+        $template = $this->createMock(\Twig\Template::class);
+        $this->twig->method('load')->willReturn(new \Twig\TemplateWrapper($this->twig, $template));
         $this->validator->validate(
             '@DadesCms/page/blankpage/seo_page.html.twig',
             new \Dades\CmsBundle\Validator\Files\TwigTemplateExists()

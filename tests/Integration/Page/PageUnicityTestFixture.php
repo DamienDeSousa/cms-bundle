@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Dades\CmsBundle\DataFixtures\ORM\Page;
+namespace Dades\CmsBundle\Tests\Integration\Page;
 
 use Dades\CmsBundle\Entity\Page;
 use Doctrine\Bundle\FixturesBundle\Fixture;
