@@ -6,7 +6,7 @@ namespace Dades\CmsBundle\Tests\Integration\Site;
 
 
 use Dades\CmsBundle\DadesCmsBundle;
-use Dades\CmsBundle\Tests\LoadResourceTrait;
+use Dades\TestUtils\Loader\LoadResourceTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;

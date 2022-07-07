@@ -6,7 +6,7 @@ namespace Dades\CmsBundle\Tests\Integration\Site;
 
 use Dades\CmsBundle\DadesCmsBundle;
 use Dades\CmsBundle\Tests\Integration\Site\DeleteSiteTestFixture;
-use Dades\CmsBundle\Tests\LoadResourceTrait;
+use Dades\TestUtils\Loader\LoadResourceTrait;
 use Dades\CmsBundle\Tests\RunCommandTrait;
 use Dades\TestFixtures\Fixture\FixtureLoaderTrait;
 use PHPUnit\Framework\TestCase;

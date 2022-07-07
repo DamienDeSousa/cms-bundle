@@ -9,7 +9,7 @@ use Dades\CmsBundle\Tests\Integration\Routing\RouteLoaderTestFixture;
 use Dades\CmsBundle\Entity\Page;
 use Dades\CmsBundle\Routing\RouteLoader;
 use Dades\CmsBundle\Tests\Integration\Page\PageUnicityKernel;
-use Dades\CmsBundle\Tests\LoadResourceTrait;
+use Dades\TestUtils\Loader\LoadResourceTrait;
 use Dades\CmsBundle\Tests\RunCommandTrait;
 use Dades\TestFixtures\Fixture\FixtureLoaderTrait;
 use Symfony\Bundle\FrameworkBundle\Console\Application;

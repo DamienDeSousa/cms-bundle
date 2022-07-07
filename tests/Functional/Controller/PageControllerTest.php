@@ -7,7 +7,7 @@ namespace Dades\CmsBundle\Tests\Functional\Controller;
 use Dades\CmsBundle\DadesCmsBundle;
 use Dades\CmsBundle\Tests\Functional\Controller;
 use Dades\CmsBundle\Entity\Page;
-use Dades\CmsBundle\Tests\LoadResourceTrait;
+use Dades\TestUtils\Loader\LoadResourceTrait;
 use Dades\CmsBundle\Tests\RunCommandTrait;
 use Dades\TestFixtures\Fixture\FixtureLoaderTrait;
 use Doctrine\Persistence\ManagerRegistry;

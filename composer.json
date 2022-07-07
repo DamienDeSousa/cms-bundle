@@ -24,8 +24,10 @@
         "symfony/framework-bundle": "^5.4.9",
         "symfony/console": "^5.4.9",
         "symfony/monolog-bundle": "^3.8.0",
+        "symfony/monolog-bridge": "^5.4",
         "doctrine/orm": "^2.12.2",
         "doctrine/doctrine-bundle": "^2.7.0",
+        "symfony/doctrine-bridge": "^5.4",
         "symfony/twig-bundle": "^5.4.8",
         "symfony/translation": "^5.4.9",
         "symfony/validator": "^5.4.8",
@@ -34,6 +36,7 @@
     "require-dev": {
         "symfony/phpunit-bridge": "^6.1.2",
         "dades/test-fixtures": "*@dev",
-        "symfony/browser-kit": "^5.4.3"
+        "symfony/browser-kit": "^5.4.3",
+        "dades/test-utils": "*@dev"
     }
 }
