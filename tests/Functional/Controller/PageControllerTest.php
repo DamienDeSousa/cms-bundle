@@ -4,52 +4,31 @@ declare(strict_types=1);
 
 namespace Dades\CmsBundle\Tests\Functional\Controller;
 
+use Dades\CmsBundle\DadesCmsBundle;
 use Dades\CmsBundle\DataFixtures\ORM\Controller\PageControllerTestFixture;
 use Dades\CmsBundle\Entity\Page;
-use Dades\TestFixtures\Fixture\FixtureAttachedTrait;
+use Dades\TestFixtures\Fixture\FixtureLoaderTrait;
 use Doctrine\Persistence\ManagerRegistry;
+use PHPUnit\Framework\TestCase;
+use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Routing\RouteCollectionBuilder;
 
-class PageControllerTest extends WebTestCase
+class PageControllerTest extends TestCase
 {
-    use FixtureAttachedTrait;
+    use FixtureLoaderTrait;
 
     private KernelBrowser $client;
 
-    protected static function getFixtureNameForTestCase(string $testCaseName): string
+    public function testDisplay404CmsPage()
     {
-        return PageControllerTestFixture::class;
-    }
+        $this->client->request('GET', '/unexpected-url');
+        $response = $this->client->getResponse();
 
-    protected function setUp(): void
-    {
-        if (!$this instanceof KernelTestCase) {
-            throw new LogicException(
-                'The "FixtureAttachedTrait" should only be used on objects extending the '
-                . 'symfony/framework-bundle KernelTestCase.'
-            );
-        }
-
-        //star rewrite
-        $this->client = static::createClient();
-        //end rewrite
-
-        if (!self::$container->has(ManagerRegistry::class)) {
-            throw new LogicException(
-                'No Doctrine ManagerRegistry service has been found in the service container. Please provide'
-                . 'an implementation.'
-            );
-        }
-
-        /** @var ManagerRegistry $registry */
-        $registry = self::$container->get(ManagerRegistry::class);
-        $fixtureName = static::getFixtureNameForTestCase(get_class($this));
-        $this->loadFixture(
-            $registry->getManager(),
-            new $fixtureName()
-        );
+        $this->assertEquals(404, $response->getStatusCode());
     }
 
     public function testDisplayCmsPage()
@@ -57,14 +36,61 @@ class PageControllerTest extends WebTestCase
         /** @var Page $page */
         $page = $this->fixtureRepository->getReference('page');
         $this->client->request('GET', sprintf('/%s', $page->getUrl()));
+        $response = $this->client->getResponse();
 
-        $this->assertResponseIsSuccessful();
+        $this->assertEquals(200, $response->getStatusCode());
     }
 
-    public function testDisplay404CmsPage()
+    protected function setUp(): void
     {
-        $this->client->request('GET', '/unexpected-url');
+        $kernel = new class('test', true) extends Kernel
+        {
+            use MicroKernelTrait;
 
-        $this->assertResponseStatusCodeSame(404);
+            public function __construct(string $environment, bool $debug)
+            {
+                parent::__construct($environment, $debug);
+            }
+
+            public function registerBundles(): iterable
+            {
+                return [
+                    new DadesCmsBundle(),
+                    new \Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
+                    new \Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+                    new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
+                    new \Symfony\Bundle\TwigBundle\TwigBundle(),
+                    new \Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle(),
+                ];
+            }
+
+            protected function configureRoutes(RouteCollectionBuilder $routes)
+            {
+            }
+
+            protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader)
+            {
+                $confDir = $this->getProjectDir().'/src/Resources/config';
+                $loader->load($confDir . '/test/doctrine.yaml', 'yaml');
+                $loader->load($confDir . '/test/framework.yaml', 'yaml');
+                $loader->load($confDir . '/test/twig.yaml', 'yaml');
+                $loader->load($confDir . '/test/cmf_routing.yaml', 'yaml');
+                $loader->load($confDir . '/test/routing.yaml', 'yaml');
+            }
+
+            public function getCacheDir(): string
+            {
+                return __DIR__ . '/../../../cache/' . spl_object_hash($this);
+            }
+        };
+
+        $kernel->boot();
+        $this->client = new KernelBrowser($kernel);
+        /** @var ManagerRegistry $registry */
+        $registry = $kernel->getContainer()->get('doctrine');
+        $this->loadFixture(
+            $registry->getManager(),
+            new PageControllerTestFixture()
+        );
     }
 }

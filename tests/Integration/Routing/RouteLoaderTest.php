@@ -4,33 +4,28 @@ declare(strict_types=1);
 
 namespace Dades\CmsBundle\Tests\Integration\Routing;
 
+use Dades\CmsBundle\DadesCmsBundle;
 use Dades\CmsBundle\DataFixtures\ORM\Routing\RouteLoaderTestFixture;
 use Dades\CmsBundle\Entity\Page;
 use Dades\CmsBundle\Routing\RouteLoader;
-use Dades\TestFixtures\Fixture\FixtureAttachedTrait;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Dades\CmsBundle\Tests\Integration\Page\PageUnicityKernel;
+use Dades\TestFixtures\Fixture\FixtureLoaderTrait;
+use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
+use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Routing\RouteCollectionBuilder;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
-class RouteLoaderTest extends KernelTestCase
+class RouteLoaderTest extends TestCase
 {
-    use FixtureAttachedTrait {
-        FixtureAttachedTrait::setUp as setUpTrait;
-    }
+    use FixtureLoaderTrait;
 
     private RouteLoader $loader;
-
-    protected function setUp(): void
-    {
-        $this->setUpTrait();
-        self::bootKernel();
-        $this->loader = self::$kernel->getContainer()->get('test.service_container')->get('cms_dades.page_route_loader');
-    }
-
-    protected static function getFixtureNameForTestCase(string $testCaseName): string
-    {
-        return RouteLoaderTestFixture::class;
-    }
 
     public function testGetRouteByName()
     {
@@ -82,5 +77,64 @@ class RouteLoaderTest extends KernelTestCase
         $routes = $this->loader->getRouteCollectionForRequest($request);
 
         $this->assertEquals(0, $routes->count());
+    }
+
+    protected function setUp(): void
+    {
+        $kernel = new class('test', false) extends Kernel
+        {
+            use MicroKernelTrait;
+
+            public function __construct(string $environment, bool $debug)
+            {
+                parent::__construct($environment, $debug);
+            }
+
+            public function registerBundles(): iterable
+            {
+                return [
+                    new DadesCmsBundle(),
+                    new \Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
+                    new \Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+                    new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
+                    new \Symfony\Bundle\TwigBundle\TwigBundle(),
+                ];
+            }
+
+            protected function configureRoutes(RouteCollectionBuilder $routes)
+            {
+            }
+
+            protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader)
+            {
+                $confDir = $this->getProjectDir().'/src/Resources/config';
+                $loader->load($confDir . '/test/doctrine.yaml', 'yaml');
+                $loader->load($confDir . '/test/framework.yaml', 'yaml');
+                $loader->load($confDir . '/test/twig.yaml', 'yaml');
+            }
+
+            public function getCacheDir(): string
+            {
+                return __DIR__ . '/../../../cache/' . spl_object_hash($this);
+            }
+
+            protected function build(ContainerBuilder $container)
+            {
+                $container->getCompilerPassConfig()->addPass(new class implements CompilerPassInterface{
+                    public function process(ContainerBuilder $container)
+                    {
+                        $container->getDefinition('cms_dades.page_route_loader')->setPublic(true);
+                    }
+                }, PassConfig::TYPE_BEFORE_REMOVING);
+            }
+        };
+
+        $kernel->boot();
+        $this->managerRegistry = $kernel->getContainer()->get('doctrine');
+        $this->loadFixture(
+            $this->managerRegistry->getManager(),
+            new RouteLoaderTestFixture()
+        );
+        $this->loader = $kernel->getContainer()->get('cms_dades.page_route_loader');
     }
 }

@@ -36,7 +36,6 @@ class RouteLoader extends PageRepository implements RouteProviderInterface
 
     public function getRouteCollectionForRequest(Request $request): RouteCollection
     {
-        //remove "/" from the request
         $requestUri = substr($request->getRequestUri(), 1);
         $pages = $this->findBy(['url' => $requestUri]);
         $collection = new RouteCollection();

@@ -8,7 +8,7 @@ use Dades\CmsBundle\Entity\Site;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class IconSiteTest extends Fixture
+class IconSiteTestFixture extends Fixture
 {
     public function load(ObjectManager $manager)
     {

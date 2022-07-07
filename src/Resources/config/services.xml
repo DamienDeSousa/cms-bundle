@@ -102,7 +102,11 @@
 
 
         <!--    ROUTE LOADERS    -->
-        <service id="cms_dades.page_route_loader" class="Dades\CmsBundle\Routing\RouteLoader" parent="Dades\CmsBundle\Repository\PageRepository"/>
+        <service
+                id="cms_dades.page_route_loader"
+                class="Dades\CmsBundle\Routing\RouteLoader"
+                parent="Dades\CmsBundle\Repository\PageRepository"
+        />
 
 
 
