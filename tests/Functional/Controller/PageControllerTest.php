@@ -7,6 +7,7 @@ namespace Dades\CmsBundle\Tests\Functional\Controller;
 use Dades\CmsBundle\DadesCmsBundle;
 use Dades\CmsBundle\Tests\Functional\Controller;
 use Dades\CmsBundle\Entity\Page;
+use Dades\CmsBundle\Tests\LoadResourceTrait;
 use Dades\CmsBundle\Tests\RunCommandTrait;
 use Dades\TestFixtures\Fixture\FixtureLoaderTrait;
 use Doctrine\Persistence\ManagerRegistry;
@@ -54,6 +55,8 @@ class PageControllerTest extends TestCase
         {
             use MicroKernelTrait;
 
+            use LoadResourceTrait;
+
             public function __construct(string $environment, bool $debug)
             {
                 parent::__construct($environment, $debug);
@@ -77,12 +80,10 @@ class PageControllerTest extends TestCase
 
             protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader)
             {
-                $confDir = $this->getProjectDir().'/tests/fixtures/resources/config';
-                $loader->load($confDir . '/doctrine.yaml', 'yaml');
-                $loader->load($confDir . '/framework.yaml', 'yaml');
-                $loader->load($confDir . '/twig.yaml', 'yaml');
-                $loader->load($confDir . '/cmf_routing.yaml', 'yaml');
-                $loader->load($confDir . '/routing.yaml', 'yaml');
+                $this->loadTwigResource($this->getProjectDir(), $loader);
+                $this->loadDoctrineResource($this->getProjectDir(), $loader);
+                $this->loadFrameworkResource($this->getProjectDir(), $loader);
+                $this->loadCmfRoutingResource($this->getProjectDir(), $loader);
             }
 
             public function getCacheDir(): string

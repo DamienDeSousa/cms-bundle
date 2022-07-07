@@ -6,6 +6,7 @@ namespace Dades\CmsBundle\Tests\Integration\Site;
 
 
 use Dades\CmsBundle\DadesCmsBundle;
+use Dades\CmsBundle\Tests\LoadResourceTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -31,6 +32,8 @@ class NoIconWithoutSiteTest extends TestCase
         {
             use MicroKernelTrait;
 
+            use LoadResourceTrait;
+
             public function __construct(string $environment, bool $debug)
             {
                 parent::__construct($environment, $debug);
@@ -53,10 +56,9 @@ class NoIconWithoutSiteTest extends TestCase
 
             protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader)
             {
-                $confDir = $this->getProjectDir().'/tests/fixtures/resources/config';
-                $loader->load($confDir . '/doctrine.yaml', 'yaml');
-                $loader->load($confDir . '/framework.yaml', 'yaml');
-                $loader->load($confDir . '/twig.yaml', 'yaml');
+                $this->loadDoctrineResource($this->getProjectDir(), $loader);
+                $this->loadFrameworkResource($this->getProjectDir(), $loader);
+                $this->loadTwigResource($this->getProjectDir(), $loader);
             }
 
             public function getCacheDir(): string

@@ -7,6 +7,7 @@ namespace Dades\CmsBundle\Tests\Integration\Site;
 use Dades\CmsBundle\DadesCmsBundle;
 use Dades\CmsBundle\Tests\Integration\Site\IconSiteTestFixture;
 use Dades\CmsBundle\Entity\Site;
+use Dades\CmsBundle\Tests\LoadResourceTrait;
 use Dades\CmsBundle\Tests\RunCommandTrait;
 use Dades\CmsBundle\Twig\Admin\AdminExtension;
 use Dades\TestFixtures\Fixture\FixtureAttachedTrait;
@@ -45,6 +46,8 @@ class IconSiteTest extends TestCase
         {
             use MicroKernelTrait;
 
+            use LoadResourceTrait;
+
             public function __construct(string $environment, bool $debug)
             {
                 parent::__construct($environment, $debug);
@@ -67,10 +70,9 @@ class IconSiteTest extends TestCase
 
             protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader)
             {
-                $confDir = $this->getProjectDir().'/tests/fixtures/resources/config';
-                $loader->load($confDir . '/doctrine.yaml', 'yaml');
-                $loader->load($confDir . '/framework.yaml', 'yaml');
-                $loader->load($confDir . '/twig.yaml', 'yaml');
+                $this->loadDoctrineResource($this->getProjectDir(), $loader);
+                $this->loadFrameworkResource($this->getProjectDir(), $loader);
+                $this->loadTwigResource($this->getProjectDir(), $loader);
             }
 
             public function getCacheDir(): string

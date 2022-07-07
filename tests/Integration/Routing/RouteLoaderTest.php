@@ -9,6 +9,7 @@ use Dades\CmsBundle\Tests\Integration\Routing\RouteLoaderTestFixture;
 use Dades\CmsBundle\Entity\Page;
 use Dades\CmsBundle\Routing\RouteLoader;
 use Dades\CmsBundle\Tests\Integration\Page\PageUnicityKernel;
+use Dades\CmsBundle\Tests\LoadResourceTrait;
 use Dades\CmsBundle\Tests\RunCommandTrait;
 use Dades\TestFixtures\Fixture\FixtureLoaderTrait;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -89,6 +90,8 @@ class RouteLoaderTest extends TestCase
         {
             use MicroKernelTrait;
 
+            use LoadResourceTrait;
+
             public function __construct(string $environment, bool $debug)
             {
                 parent::__construct($environment, $debug);
@@ -111,10 +114,9 @@ class RouteLoaderTest extends TestCase
 
             protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader)
             {
-                $confDir = $this->getProjectDir().'/tests/fixtures/resources/config';
-                $loader->load($confDir . '/doctrine.yaml', 'yaml');
-                $loader->load($confDir . '/framework.yaml', 'yaml');
-                $loader->load($confDir . '/twig.yaml', 'yaml');
+                $this->loadDoctrineResource($this->getProjectDir(), $loader);
+                $this->loadFrameworkResource($this->getProjectDir(), $loader);
+                $this->loadTwigResource($this->getProjectDir(), $loader);
             }
 
             public function getCacheDir(): string
