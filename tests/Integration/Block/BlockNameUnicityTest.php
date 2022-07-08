@@ -8,7 +8,7 @@ use Dades\CmsBundle\DadesCmsBundle;
 use Dades\CmsBundle\Tests\Integration\Block\BlockNameUnicityTestFixture;
 use Dades\CmsBundle\Entity\Block;
 use Dades\TestUtils\Loader\LoadResourceTrait;
-use Dades\CmsBundle\Tests\RunCommandTrait;
+use Dades\TestUtils\Runner\RunCommandTrait;
 use Dades\TestFixtures\Fixture\FixtureLoaderTrait;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use PHPUnit\Framework\TestCase;

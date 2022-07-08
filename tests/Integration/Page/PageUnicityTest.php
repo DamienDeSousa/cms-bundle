@@ -10,7 +10,7 @@ use Dades\CmsBundle\Entity\Block;
 use Dades\CmsBundle\Entity\Page;
 use Dades\CmsBundle\Tests\Integration\Block\BlockNameUnicityKernel;
 use Dades\TestUtils\Loader\LoadResourceTrait;
-use Dades\CmsBundle\Tests\RunCommandTrait;
+use Dades\TestUtils\Runner\RunCommandTrait;
 use Dades\TestFixtures\Fixture\FixtureAttachedTrait;
 use Dades\TestFixtures\Fixture\FixtureLoaderTrait;
 use Symfony\Bridge\Doctrine\ManagerRegistry;

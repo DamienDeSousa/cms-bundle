@@ -15,7 +15,7 @@ namespace Dades\CmsBundle\Tests\Integration\Site;
 use Dades\CmsBundle\DadesCmsBundle;
 use Dades\CmsBundle\DataFixtures\ORM\Site\CreateSiteCommandTestFixture;
 use Dades\TestUtils\Loader\LoadResourceTrait;
-use Dades\CmsBundle\Tests\RunCommandTrait;
+use Dades\TestUtils\Runner\RunCommandTrait;
 use Dades\TestFixtures\Fixture\FixtureLoaderTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;

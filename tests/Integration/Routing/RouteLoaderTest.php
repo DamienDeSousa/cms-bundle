@@ -10,7 +10,7 @@ use Dades\CmsBundle\Entity\Page;
 use Dades\CmsBundle\Routing\RouteLoader;
 use Dades\CmsBundle\Tests\Integration\Page\PageUnicityKernel;
 use Dades\TestUtils\Loader\LoadResourceTrait;
-use Dades\CmsBundle\Tests\RunCommandTrait;
+use Dades\TestUtils\Runner\RunCommandTrait;
 use Dades\TestFixtures\Fixture\FixtureLoaderTrait;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;

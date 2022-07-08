@@ -8,7 +8,7 @@ use Dades\CmsBundle\DadesCmsBundle;
 use Dades\CmsBundle\Tests\Integration\Site\IconSiteTestFixture;
 use Dades\CmsBundle\Entity\Site;
 use Dades\TestUtils\Loader\LoadResourceTrait;
-use Dades\CmsBundle\Tests\RunCommandTrait;
+use Dades\TestUtils\Runner\RunCommandTrait;
 use Dades\CmsBundle\Twig\Admin\AdminExtension;
 use Dades\TestFixtures\Fixture\FixtureAttachedTrait;
 use Dades\TestFixtures\Fixture\FixtureLoaderTrait;
