@@ -34,7 +34,7 @@ class PageControllerTestFixture extends Fixture
         $page = new Page();
         $page->setRouteName('route_name');
         $page->setTemplate('@DadesCms/page/blankpage/seo_page.html.twig');
-        $page->setUrl('anakin-skywalker');
+        $page->setUrl('/anakin-skywalker');
         $page->setSeoBlock($block);
         $manager->persist($page);
         $manager->flush();

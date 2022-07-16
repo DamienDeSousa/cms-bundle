@@ -43,7 +43,7 @@ class PageControllerTest extends TestCase
     {
         /** @var Page $page */
         $page = $this->fixtureRepository->getReference('page');
-        $this->client->request('GET', sprintf('/%s', $page->getUrl()));
+        $this->client->request('GET', $page->getUrl());
         $response = $this->client->getResponse();
 
         $this->assertEquals(200, $response->getStatusCode());

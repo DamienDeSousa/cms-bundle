@@ -39,7 +39,7 @@ class RouteLoaderTest extends TestCase
         $route = $this->loader->getRouteByName($page->getRouteName());
 
         $this->assertEquals(
-            sprintf('/%s', $page->getUrl()),
+            $page->getUrl(),
             $route->getPath()
         );
     }
@@ -70,7 +70,7 @@ class RouteLoaderTest extends TestCase
     {
         /** @var Page $page */
         $page = $this->fixtureRepository->getReference('page');
-        $request = new Request(server: ['REQUEST_URI' => '/' . $page->getUrl()]);
+        $request = new Request(server: ['REQUEST_URI' => $page->getUrl()]);
         $routes = $this->loader->getRouteCollectionForRequest($request);
 
         $this->assertEquals(1, $routes->count());
@@ -146,9 +146,9 @@ class RouteLoaderTest extends TestCase
                 '--force' => true,
             ]
         );
-        $this->managerRegistry = $kernel->getContainer()->get('doctrine');
+        $managerRegistry = $kernel->getContainer()->get('doctrine');
         $this->loadFixture(
-            $this->managerRegistry->getManager(),
+            $managerRegistry->getManager(),
             new RouteLoaderTestFixture()
         );
         $this->loader = $kernel->getContainer()->get('cms_dades.page_route_loader');

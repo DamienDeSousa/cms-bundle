@@ -13,7 +13,7 @@ class RouteLoaderTestFixture extends Fixture
     public function load(ObjectManager $manager)
     {
         $page = new Page();
-        $page->setUrl('obiwan-kenobi');
+        $page->setUrl('/obiwan-kenobi');
         $page->setRouteName('route_name');
         $page->setTemplate('path/to/template.html.twig');
         $manager->persist($page);
